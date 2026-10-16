@@ -20,19 +20,36 @@ def get_deal_rating(price):
             return "Overpriced"
 
 def car_search():
+    
     make = input("Enter manufacturer: ").lower()
-    max_price = int(input("Enter maximum price: "))
-    mileage = int(input("Enter maximum mileage: ")) 
+    max_price = input("Enter maximum price: ")
+    if max_price != "":
+            try:
+                max_price = int(max_price)
+            except ValueError:
+                print("Enter a valid number")
+                return
+    mileage = input("Enter maximum mileage: ")
+    if mileage != "":
+            try:
+                mileage = int(mileage)
+            except ValueError:
+                print("Enter a valid number")
+                return
+    
     found = False
-
-
+    
     result_list = []
-
+        
     for car in cars:
-        if (max_price >= car.price) and (make == car.make.lower()) and (mileage >= car.mileage):
-            result= (car.make, car.model, car.year, car.price, car.mileage)
-            result_list.append(result)
-            found = True 
+        make_matches = make== "" or make == car.make.lower()
+        price_matches = max_price == "" or max_price >= car.price
+        mileage_matches = mileage == "" or mileage >= car.mileage
+        
+        if (make_matches) and (price_matches) and (mileage_matches):
+             result = (car.make, car.model, car.year, car.price, car.mileage)
+             result_list.append(result)
+             found = True
 
     if found == False:
         print("No results")
@@ -41,10 +58,12 @@ def car_search():
 def sort_cars(result_list):
     sorting = input("Sort by price or mileage? ").lower()
 
-    if sorting == "mileage":
+    if sorting == "mileage" or sorting == "m":
         index = 4
-    elif sorting == "price":
+    elif sorting == "price" or sorting == "p":
         index = 3
+    elif sorting == "no":
+         return result_list
     else:
         print("Invalid sorting option")
         return result_list
@@ -55,7 +74,7 @@ def sort_cars(result_list):
                 result_list[j], result_list[j + 1] = result_list[j + 1], result_list[j]
 
     return result_list
-         
+        
 
 car1 = Car("Toyota", "Camry", 2006, 15000, 23000)
 car2 = Car("Honda", "Civic", 2015, 23000, 54000)
@@ -65,9 +84,9 @@ car4 = Car("BMW", "540i", 2018, 27000, 78000)
 cars = [car1,car2,car3,car4]
 
 results = car_search()
-sorted_results = sort_cars(results)
 
-for car in sorted_results:
-    print(car)
-
+if results is not None:
+    sorted_results = sort_cars(results)
+    for car in sorted_results:
+        print(f"{car[0]} {car[1]} | Year: {car[2]} | Price: ${car[3]} | Mileage: {car[4]}")
 
