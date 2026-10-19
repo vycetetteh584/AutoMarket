@@ -83,10 +83,32 @@ car4 = Car("BMW", "540i", 2018, 27000, 78000)
 
 cars = [car1,car2,car3,car4]
 
-results = car_search()
+#results = car_search()
 
-if results is not None:
-    sorted_results = sort_cars(results)
-    for car in sorted_results:
-        print(f"{car[0]} {car[1]} | Year: {car[2]} | Price: ${car[3]} | Mileage: {car[4]}")
+while True:
+     print("Press 1 to search for cars")
+     print("Press 2 to view all cars")
+     print("E for exit")
+
+     choice = input("Enter your choice: ").lower()
+
+     if choice == "1":
+          results =car_search()
+          if results is not None:
+            for car in results:
+                print(f"{car[0]} {car[1]} | Year: {car[2]} | Price: ${car[3]} | Mileage: {car[4]}")
+     elif choice== "2":
+          for car in cars:
+            print(f"Make: {car.make} {car.model} | Year: {car.year} | Price: ${car.price} | Mileage: {car.mileage}")
+     
+     elif choice == "e":
+          break
+     else:
+          print("Invalid choice")
+     
+
+#if results is not None:
+ #   sorted_results = sort_cars(results)
+  #  for car in sorted_results:
+   #     print(f"{car[0]} {car[1]} | Year: {car[2]} | Price: ${car[3]} | Mileage: {car[4]}")
 
