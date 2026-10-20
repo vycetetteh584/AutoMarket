@@ -72,6 +72,7 @@ cars = [car1,car2,car3,car4]
 while True:
      print("Press 1 to search for cars")
      print("Press 2 to view all cars")
+     print("Press 3 to add a car")
      print("E for exit")
 
      choice = input("Enter your choice: ").lower()
@@ -99,7 +100,55 @@ while True:
      elif choice== "2":
           for car in cars:
             print(f"Make: {car.make} {car.model} | Year: {car.year} | Price: ${car.price} | Mileage: {car.mileage}")
-     
+     elif choice == "3":
+         while True:
+            new_make = input("Enter manufacturer: ")
+            if new_make == "":
+                print("Manufacturer cannot be empty")
+                continue
+            break
+         while True:
+            new_model = input("Enter model: ")
+            if new_model == "":
+                    print("Model cannot be empty")
+                    continue
+            break
+         while True:
+            new_year = input("Enter year: ")
+            if new_year == "":
+                print("Year cannot be empty")
+                continue
+            try:
+                new_year = int(new_year)
+                break
+            except ValueError:
+                print("Enter a valid year")
+                continue
+         while True:
+            new_price = input("Enter price: ")
+            if new_price == "":
+                print("Price cannot be empty")
+                continue
+            try:
+                new_price = int(new_price)
+                break
+            except ValueError:
+                print("Enter a valid price")
+                continue
+         while True:
+            new_mileage = input("Ente mileage: ")
+            if new_mileage == "":
+                print("Mileage cannot be empty")
+                continue
+            try:
+                new_mileage = int(new_mileage)
+                break
+            except ValueError:
+                print("Enter a valid mileage")
+                continue
+         new_car = Car(new_make,new_model,new_year,new_price,new_mileage)
+         cars.append(new_car)
+         
      elif choice == "e":
           break
      else:
