@@ -19,23 +19,7 @@ def get_deal_rating(price):
       else:
             return "Overpriced"
 
-def car_search():
-    
-    make = input("Enter manufacturer: ").lower()
-    max_price = input("Enter maximum price: ")
-    if max_price != "":
-            try:
-                max_price = int(max_price)
-            except ValueError:
-                print("Enter a valid number")
-                return
-    mileage = input("Enter maximum mileage: ")
-    if mileage != "":
-            try:
-                mileage = int(mileage)
-            except ValueError:
-                print("Enter a valid number")
-                return
+def car_search(make, max_price, mileage):
     
     found = False
     
@@ -93,8 +77,23 @@ while True:
      choice = input("Enter your choice: ").lower()
 
      if choice == "1":
-          results =car_search()
-          if results is not None:
+        make = input("Enter manufacturer: ").lower()
+        max_price = input("Enter maximum price: ")
+        if max_price != "":
+            try:
+                max_price = int(max_price)
+            except ValueError:
+                print("Enter a valid number")
+                continue
+        mileage = input("Enter maximum mileage: ")
+        if mileage != "":
+            try:
+                mileage = int(mileage)
+            except ValueError:
+                print("Enter a valid number")
+                continue
+        results =car_search(make, max_price, mileage)
+        if results is not None:
             for car in results:
                 print(f"{car[0]} {car[1]} | Year: {car[2]} | Price: ${car[3]} | Mileage: {car[4]}")
      elif choice== "2":
