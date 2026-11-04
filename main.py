@@ -1,3 +1,4 @@
+import json
 class Car:
     def __init__(self, make,model, year, price, mileage):
         self.make = make
@@ -5,7 +6,34 @@ class Car:
         self.year = year
         self.price = price
         self.mileage = mileage
-    
+
+    def to_dict(self):
+        return {
+            "make": self.make, "model": self.model, "year": self.year, "price": self.price, "mileage" : self.mileage
+        }
+
+def save_cars(cars):
+    car_data = []
+
+    for car in cars:
+        car_data.append(car.to_dict())
+    with open("cars.json", "w") as file:
+        json.dump(car_data,file)
+
+def load_cars():
+    try:
+        with open("cars.json", "r",) as file: 
+         car_data = json.load(file)
+    except FileNotFoundError:
+       return []
+
+    cars = []
+    for car in car_data:
+        new_car = Car(car["make"], car["model"], car['year'], car["price"], car["mileage"])
+        cars.append(new_car)
+    return cars
+
+
 def is_affordable(price,budget):
       if budget < price:
             return False
@@ -65,7 +93,7 @@ car2 = Car("Honda", "Civic", 2015, 23000, 54000)
 car3 = Car("BMW", "340i", 2020, 32000, 74300)
 car4 = Car("BMW", "540i", 2018, 27000, 78000)
 
-cars = [car1,car2,car3,car4]
+cars = load_cars()
 
 #results = car_search()
 
@@ -103,13 +131,13 @@ while True:
      elif choice == "3":
          while True:
             new_make = input("Enter manufacturer: ")
-            if new_make == "":
+            if new_make.strip() == "":
                 print("Manufacturer cannot be empty")
                 continue
             break
          while True:
             new_model = input("Enter model: ")
-            if new_model == "":
+            if new_model.strip() == "":
                     print("Model cannot be empty")
                     continue
             break
@@ -120,6 +148,9 @@ while True:
                 continue
             try:
                 new_year = int(new_year)
+                if new_year < 1900 or new_year > 2027:
+                    print("Must be a year between 1900 and 2027")
+                    continue
                 break
             except ValueError:
                 print("Enter a valid year")
@@ -131,23 +162,30 @@ while True:
                 continue
             try:
                 new_price = int(new_price)
+                if new_price < 0:
+                    print("Price must be greater than 0")
+                    continue
                 break
             except ValueError:
                 print("Enter a valid price")
                 continue
          while True:
-            new_mileage = input("Ente mileage: ")
+            new_mileage = input("Enter mileage: ")
             if new_mileage == "":
                 print("Mileage cannot be empty")
                 continue
             try:
                 new_mileage = int(new_mileage)
+                if new_mileage <= 0:
+                    print("Mileage cannot be negative")
+                    continue
                 break
             except ValueError:
                 print("Enter a valid mileage")
                 continue
          new_car = Car(new_make,new_model,new_year,new_price,new_mileage)
          cars.append(new_car)
+         save_cars(cars)
          
      elif choice == "e":
           break
