@@ -101,6 +101,7 @@ while True:
      print("Press 1 to search for cars")
      print("Press 2 to view all cars")
      print("Press 3 to add a car")
+     print("Press 4 to delete a car")
      print("E for exit")
 
      choice = input("Enter your choice: ").lower()
@@ -126,8 +127,8 @@ while True:
             for car in results:
                 print(f"{car[0]} {car[1]} | Year: {car[2]} | Price: ${car[3]} | Mileage: {car[4]}")
      elif choice== "2":
-          for car in cars:
-            print(f"Make: {car.make} {car.model} | Year: {car.year} | Price: ${car.price} | Mileage: {car.mileage}")
+          for index,car in enumerate(cars, start =1):
+            print(f" {index}. {car.make} {car.model} | Year: {car.year} | Price: ${car.price} | Mileage: {car.mileage}")
      elif choice == "3":
          while True:
             new_make = input("Enter manufacturer: ")
@@ -143,7 +144,7 @@ while True:
             break
          while True:
             new_year = input("Enter year: ")
-            if new_year == "":
+            if new_year.strip() == "":
                 print("Year cannot be empty")
                 continue
             try:
@@ -157,7 +158,7 @@ while True:
                 continue
          while True:
             new_price = input("Enter price: ")
-            if new_price == "":
+            if new_price.strip() == "":
                 print("Price cannot be empty")
                 continue
             try:
@@ -171,7 +172,7 @@ while True:
                 continue
          while True:
             new_mileage = input("Enter mileage: ")
-            if new_mileage == "":
+            if new_mileage.strip() == "":
                 print("Mileage cannot be empty")
                 continue
             try:
@@ -186,6 +187,30 @@ while True:
          new_car = Car(new_make,new_model,new_year,new_price,new_mileage)
          cars.append(new_car)
          save_cars(cars)
+     elif choice == "4":
+        if cars == []:
+            print("No cars to delete")
+            continue
+        for index,car in enumerate(cars, start =1):
+            print(f" {index}. {car.make} {car.model} | Year: {car.year} | Price: ${car.price} | Mileage: {car.mileage}")
+            
+        while True:
+            delete_car = input("Enter the vehicle that you want to delete: ")
+            if delete_car.strip() == "":
+                print("Field cannot be empty")
+                continue
+            
+            try:
+                delete_car = int(delete_car)
+                if delete_car < 1 or delete_car > len(cars):
+                    print("Delete a valid vehicle")
+                    continue
+                break
+            except ValueError:
+                print("Enter a valid number")
+        cars.pop(delete_car-1)
+        save_cars(cars)
+        print("Car deleted successfully!")
          
      elif choice == "e":
           break
