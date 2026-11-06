@@ -94,6 +94,8 @@ car3 = Car("BMW", "340i", 2020, 32000, 74300)
 car4 = Car("BMW", "540i", 2018, 27000, 78000)
 
 cars = load_cars()
+fields = ["Make", "Model", "Year", "Price", "Mileage", "Entire Listing"]
+
 
 #results = car_search()
 
@@ -102,6 +104,7 @@ while True:
      print("Press 2 to view all cars")
      print("Press 3 to add a car")
      print("Press 4 to delete a car")
+     print("Press 5 to update a car listing")
      print("E for exit")
 
      choice = input("Enter your choice: ").lower()
@@ -211,6 +214,189 @@ while True:
         cars.pop(delete_car-1)
         save_cars(cars)
         print("Car deleted successfully!")
+
+     elif choice == "5":
+        if cars == []:
+            print("No cars to update")
+            continue
+        for index,car in enumerate(cars, start =1):
+            print(f" {index}. {car.make} {car.model} | Year: {car.year} | Price: ${car.price} | Mileage: {car.mileage}")
+        while True:
+            update_car = input("Enter the vehicle that you want to update: ")
+            if update_car.strip() == "":
+                print("Field cannot be empty")
+                continue
+            try:
+                update_car = int(update_car)
+                if update_car < 1 or update_car > len(cars):
+                    print("Update a valid vehicle")
+                    continue
+                break
+
+            except ValueError:
+                print("Enter a valid number")
+            
+        selected_car = cars[update_car-1]
+        for index, field in enumerate(fields, start =1):
+            print(f"{index}. {field}")
+        
+        while True:
+            update_input = input("What would you like to update?: ")
+            if update_input.strip() == "":
+                print("Field cannot be empty")
+                continue
+            try:
+                update_input= int(update_input)
+                if update_input <1 or update_input >6:
+                    print("Enter a valid option")
+                    continue
+                break
+
+            except ValueError:
+                print("Enter a valid number")
+
+        if update_input == 1:
+            while True:
+                new_make = input("Enter a new manufacturer: ")
+                if new_make.strip() == "":
+                    print("Manufacturer cannot be empty")
+                    continue
+                break
+            selected_car.make = new_make
+            save_cars(cars)
+            print("Manufactuter updated successfully")
+            
+        if update_input == 2:
+            while True:
+                new_model = input("Enter a new price: ")
+                if new_model.strip() == "":
+                    print("Model cannot be empty")
+                    continue
+                break  
+            selected_car.model = new_model
+            save_cars(cars)
+            print("Model updated successfully")
+            
+            
+        if update_input == 3:
+            while True:
+                new_year = input("Enter a new year: ")
+                if new_year.strip() == "":
+                    print("Price cannot be empty")
+                    continue
+                try:
+                    new_year = int(new_year)
+                    if new_year < 1900 or new_year > 2027: 
+                        print("Year cannot be a negative number")
+                        continue
+                    break
+                except ValueError:
+                    print("Enter a valid number")
+            selected_car.year = new_year
+            save_cars(cars)
+            print("Year updated successfully")
+                                
+            
+        if update_input == 4:
+            while True:
+                new_price = input("Enter a new price: ")
+                if new_price.strip() == "":
+                    print("Price cannot be empty")
+                    continue
+                try:
+                    new_price = int(new_price)
+                    if new_price <= 0: 
+                        print("Price cannot be less than 0")
+                        continue
+                    break
+                except ValueError:
+                    print("Enter a valid number")
+            selected_car.price = new_price
+            save_cars(cars)
+            print("Price updated successfully")
+
+        if update_input == 5:
+            while True:
+                new_mileage = input("Enter a new mileage: ")
+                if new_mileage.strip() == "":
+                    print("Mileage cannot be empty")
+                    continue
+                try:
+                    new_mileage = int(new_mileage)
+                    if new_mileage < 0: 
+                        print("Mileage cannot be a negative number")
+                        continue
+                    break
+                except ValueError:
+                    print("Enter a valid number")
+            selected_car.mileage = new_mileage
+            save_cars(cars)
+            print("Mileage updated successfully")
+
+        if update_input == 6:
+            while True:
+                new_make = input("Enter manufacturer: ")
+                if new_make.strip() == "":
+                    print("Manufacturer cannot be empty")
+                    continue
+                break
+            while True:
+                new_model = input("Enter model: ")
+                if new_model.strip() == "":
+                    print("Model cannot be empty")
+                    continue
+                break
+            while True:
+                new_year = input("Enter year: ")
+                if new_year.strip() == "":
+                    print("Year cannot be empty")
+                    continue
+                try:
+                    new_year = int(new_year)
+                    if new_year < 1900 or new_year > 2027:
+                        print("Must be a year between 1900 and 2027")
+                        continue
+                    break
+                except ValueError:
+                    print("Enter a valid year")
+                    continue
+            while True:
+                new_price = input("Enter price: ")
+                if new_price.strip() == "":
+                    print("Price cannot be empty")
+                    continue
+                try:
+                    new_price = int(new_price)
+                    if new_price < 0:
+                        print("Price must be greater than 0")
+                        continue
+                    break
+                except ValueError:
+                    print("Enter a valid price")
+                    continue
+            while True:
+                new_mileage = input("Enter mileage: ")
+                if new_mileage.strip() == "":
+                    print("Mileage cannot be empty")
+                    continue
+                try:
+                    new_mileage = int(new_mileage)
+                    if new_mileage <= 0:
+                        print("Mileage cannot be negative")
+                        continue
+                    break
+                except ValueError:
+                    print("Enter a valid mileage")
+                    continue
+            selected_car.make = new_make
+            selected_car.model = new_model
+            selected_car.year = new_year
+            selected_car.price = new_price
+            selected_car.mileage = new_mileage
+            
+            save_cars(cars)
+            print("Car listing updated successfully")
+
          
      elif choice == "e":
           break
