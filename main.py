@@ -47,7 +47,7 @@ def get_deal_rating(price):
       else:
             return "Overpriced"
 
-def car_search(make, max_price, mileage):
+def car_search(make,model, max_price, mileage, year):
     
     found = False
     
@@ -57,8 +57,10 @@ def car_search(make, max_price, mileage):
         make_matches = make== "" or make == car.make.lower()
         price_matches = max_price == "" or max_price >= car.price
         mileage_matches = mileage == "" or mileage >= car.mileage
+        model_matches = model == "" or model == car.model.lower()
+        year_matches = year == "" or year == car.year
         
-        if (make_matches) and (price_matches) and (mileage_matches):
+        if (make_matches) and (price_matches) and (mileage_matches) and (model_matches) and (year_matches):
              result = (car.make, car.model, car.year, car.price, car.mileage)
              result_list.append(result)
              found = True
@@ -111,21 +113,30 @@ while True:
 
      if choice == "1":
         make = input("Enter manufacturer: ").lower()
+        model = input("Enter model: ").lower()
         max_price = input("Enter maximum price: ")
-        if max_price != "":
+        if max_price.strip() != "":
             try:
                 max_price = int(max_price)
             except ValueError:
                 print("Enter a valid number")
                 continue
         mileage = input("Enter maximum mileage: ")
-        if mileage != "":
+        if mileage.strip() != "":
             try:
                 mileage = int(mileage)
             except ValueError:
                 print("Enter a valid number")
                 continue
-        results =car_search(make, max_price, mileage)
+        
+        year = input("Enter year: ")
+        if year.strip() != "":
+            try:
+                year = int(year)
+            except ValueError:
+                print("Emter a valid number")
+                continue
+        results =car_search(make, model ,max_price, mileage, year)
         if results is not None:
             for car in results:
                 print(f"{car[0]} {car[1]} | Year: {car[2]} | Price: ${car[3]} | Mileage: {car[4]}")
@@ -268,7 +279,7 @@ while True:
             
         if update_input == 2:
             while True:
-                new_model = input("Enter a new price: ")
+                new_model = input("Enter a new model: ")
                 if new_model.strip() == "":
                     print("Model cannot be empty")
                     continue
