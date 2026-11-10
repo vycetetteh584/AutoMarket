@@ -9,6 +9,15 @@ from .serializers import CarSerializer
 def car_list(request):
     if request.method == "GET":
         cars = Car.objects.all()
+        make = request.query_params.get("make")
+        max_price = request.query_params.get("max_price")
+        ordering = request.query_params.get("ordering")
+        if make:
+            cars = cars.filter(make__iexact= make)
+        if max_price:
+            cars = cars.filter(price__lte = max_price)
+        if ordering in ["price", "-price"]:
+            cars = cars.order_by(ordering)
         serializer = CarSerializer(cars, many = True)
         return Response(serializer.data)
     elif request.method == "POST":
