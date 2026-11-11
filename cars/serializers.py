@@ -5,6 +5,7 @@ class CarSerializer(serializers.ModelSerializer):
     class Meta:
         model = Car
         fields = ["id", "make", "model", "year", "price", "mileage"]
+        read_only_fields = ["seller"]
     def validate_year(self, value):
             if value < 1900 or value > 2027:
                  raise serializers.ValidationError("Invalid year")
