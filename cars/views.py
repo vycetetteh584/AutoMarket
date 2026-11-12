@@ -5,6 +5,7 @@ from .models import Car
 from .serializers import CarSerializer
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from django.db.models import Q
 
 
 class CarPagination(PageNumberPagination):
@@ -15,7 +16,10 @@ class CarPagination(PageNumberPagination):
 @permission_classes([IsAuthenticatedOrReadOnly])
 def car_list(request):
     if request.method == "GET":
-        cars = Car.objects.all()
+        cars = Car.objects.select_related("seller").all()
+        search = request.query_params.get("search")
+        min_price = request.query_params.get("min_price")
+        max_price = request.query_params.get("max_price")
         make = request.query_params.get("make")
         max_price = request.query_params.get("max_price")
         ordering = request.query_params.get("ordering")
@@ -32,7 +36,13 @@ def car_list(request):
 
         if ordering in ["price", "-price"]:
             cars = cars.order_by(ordering)
+        if search:
+            cars = cars.filter(Q(make__icontains = search) | Q(model__icontains = search))
         paginator = CarPagination()
+        if min_price:
+            cars = cars.filter(price__gte = min_price)
+        if max_price:
+            cars = cars.filter(price__lte = max_price)
         page = paginator.paginate_queryset(cars,request)
         serializer = CarSerializer(page, many = True)
         return paginator.get_paginated_response(serializer.data)
