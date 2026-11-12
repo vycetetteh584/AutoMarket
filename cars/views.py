@@ -16,6 +16,7 @@ class CarPagination(PageNumberPagination):
 @permission_classes([IsAuthenticatedOrReadOnly])
 def car_list(request):
     if request.method == "GET":
+        allowed_fields = ["-price", "price", "year", "-year"]
         cars = Car.objects.select_related("seller").all()
         search = request.query_params.get("search")
         min_price = request.query_params.get("min_price")
@@ -34,8 +35,10 @@ def car_list(request):
             except ValueError:
                 return Response({"error": "max_price must be a valid number"} ,status = 400)
 
-        if ordering in ["price", "-price"]:
-            cars = cars.order_by(ordering)
+        if ordering in allowed_fields:
+            cars = cars.order_by(ordering, "id")
+        else:
+            cars = cars.order_by("id")
         if search:
             cars = cars.filter(Q(make__icontains = search) | Q(model__icontains = search))
         paginator = CarPagination()

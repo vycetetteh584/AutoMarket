@@ -10,3 +10,6 @@ class Car(models.Model):
 
     seller = models.ForeignKey(User, on_delete=models.CASCADE, null = True, blank = True)
 
+    class Meta:
+        indexes = [
+            models.Index(fields = ["price"]),]
